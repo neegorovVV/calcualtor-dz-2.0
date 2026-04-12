@@ -117,6 +117,13 @@ void check(calculator& calc1)
         return;
     }
 
+     if (calc1.operation == '^' && calc1.secondnum < 0)
+    {
+        calc1.status_is_correct = false;
+        printf("Error: negative exponent leads to non-integer result. This calculator supports only integer.");
+        return;
+    }
+
     if (calc1.operation == '!' && calc1.firstnum < 0)
     {
         calc1.status_is_correct = false;
@@ -136,6 +143,7 @@ void calculate(calculator& calc1)
     }
 
     bool overflow = false;
+
 
     if (calc1.operation == '+')
     {
