@@ -17,6 +17,14 @@ GIT_TAG v3.12.0)
 FetchContent_MakeAvailable(json)
 
 FetchContent_Declare( 
+testmath
+
+GIT_REPOSITORY https://github.com/neegorovVV/test-math.git
+
+GIT_TAG math-lib-oop-refactoring)
+FetchContent_MakeAvailable(testmath)
+
+FetchContent_Declare( 
 googletest
 
 GIT_REPOSITORY https://github.com/google/googletest.git
@@ -41,6 +49,8 @@ add_executable(calc_oop
     src/Runner.cpp
 )
 
+target_include_directories(calc_oop PRIVATE ${testmath_SOURCE_DIR})
+
 target_link_libraries(calc_oop
     PRIVATE
     nlohmann_json::nlohmann_json
@@ -54,6 +64,8 @@ add_executable(tests
     tests/test_calculator.cpp
     src/Calculator.cpp
 )
+
+target_include_directories(tests PRIVATE ${testmath_SOURCE_DIR})
 
 target_link_libraries(tests
     PRIVATE

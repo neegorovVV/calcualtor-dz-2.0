@@ -3,15 +3,12 @@
 #include<string>
 #include<climits>
 #include <stdexcept>
+#include <math-lib-oop.hpp>
 
 class Calculator
 {
     private:
 
-        int firstnum;
-        int secondnum;
-        std::string operation;
-        long long result;
 
     public:
 
