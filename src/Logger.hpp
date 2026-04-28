@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <memory>
+
 #include <spdlog/spdlog.h>
 
 
@@ -9,11 +9,12 @@ class calc_logger
 {
     private:
         calc_logger();
-        std::shared_ptr<spdlog::logger> logger_;
-
-
+        spdlog::logger* logger_;
+        ~calc_logger();
+        
     public:
 
+        
         static calc_logger& instance();
 
         void info(const std::string& msg);

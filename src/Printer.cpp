@@ -1,15 +1,15 @@
 #include "Printer.hpp"
 #include "Logger.hpp"
-#include<iostream>
+
 
 void Printer::printResult(long long result)
 {
-    std::cout << "Result: " << result << std::endl;
-    calc_logger::instance().info("Result printed: " + std::to_string(result));
+    calc_logger::instance().info("Result is " + std::to_string(result));
+    calc_logger::instance().info("Result printed");
 }
 
 void Printer::printError(const std::string& ermsg)
 {
-    std::cout << "Error: " << ermsg << std::endl;
-    calc_logger::instance().error("Error printed: " +ermsg);
+     calc_logger::instance().error("Error: " +ermsg);
+    calc_logger::instance().error("Error printed");
 }

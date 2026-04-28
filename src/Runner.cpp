@@ -4,7 +4,7 @@
 #include "Calculator.hpp"
 #include "Printer.hpp"
 #include <stdexcept>
-#include <iostream>
+
 
 
 void Runner::Run(int argc, char* argv[])
@@ -12,7 +12,7 @@ void Runner::Run(int argc, char* argv[])
     if (argc != 2)
     {
         calc_logger::instance().error("Usage: ./calc_oop '<json>'");
-        std::cout << "Usage example: ./calc_oop '{\"first\":10,\"second\":5,\"op\":\"+\"}'" << std::endl;
+        calc_logger::instance().info("Usage example: ./calc_oop '{\"first\":10,\"second\":5,\"op\":\"+\"}'");
         return;
     }
 
