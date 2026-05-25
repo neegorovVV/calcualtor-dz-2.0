@@ -20,6 +20,18 @@ void Parser::parse(const std::string& jsonString)
         
         operation = data["op"];
 
+        if(operation == "+" || operation == "*" )
+        {
+            int a = std::min(first,second);
+            int b = std::max(first, second);
+            cache_string = std::to_string(a) + operation + std::to_string(b);
+        
+        }
+        else
+        {
+            cache_string = std::to_string(first) + operation + std::to_string(second);
+        }    
+        
         calc_logger::instance().info("JSON parsed correctly");
     }
 
@@ -30,6 +42,11 @@ void Parser::parse(const std::string& jsonString)
     }
 }
 
+
+    std::string Parser::get_cache_string() const
+    {
+        return cache_string;
+    }
 
 
     int Parser::getFirst() const 

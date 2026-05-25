@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../src/Calculator.hpp"
+#include "../src/Calc_structs/Calculator.hpp"
 
 TEST(CalculatorTest, AddPositive) 
 {
