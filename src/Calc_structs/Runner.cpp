@@ -12,34 +12,41 @@ void Runner::heat_cache()
 {
     auto result = data_base.execute("SELECT first_operand, second_operand, operation, result, status FROM calculation_history WHERE status IN (0, 1, 2, 3, 4)");
     calc_logger::instance().info(" \t Runner is heating cache ");
-        for(int i = 0; i < result.get_rows(); i++)
-        {    
-           try
-           {
-                std::string temp_first = result.get_value(i,0);
-                std::string temp_operation = result.get_value(i,2);
-                std::string temp_second = result.get_value(i,1);
-                std::string temp_cache_key = temp_first + temp_operation + temp_second;
-                
-
-                int temp_status = std::stoi(result.get_value(i,4));
-                long long temp_result = std::stoll(result.get_value(i,3));
-                
-                cache_result_container.put(temp_cache_key, temp_result);
-                cache_status_container.put(temp_cache_key,temp_status);
-
-                calc_logger::instance().info("# " + std::to_string(i) + " Cache Key Value: " + temp_cache_key + 
-                " Result: " + std::to_string(temp_result) + " Has put to Cache Conteiner From Data Base With Status: " + std::to_string(temp_status)) ;
-
-           }
-           catch(const std::exception& e)
-           {
-                calc_logger::instance().error(" \t Heating cache is not done succsefully.");
-           }
+    
+    for(int i = 0; i < result.get_rows(); i++)
+    {    
+        try
+        {
+            int first = std::stoi(result.get_value(i, 0));
+            int second = std::stoi(result.get_value(i, 1));
+            std::string op = result.get_value(i, 2);
             
+            std::string temp_cache_key;
+            if (op == "+" || op == "*") 
+            {
+                int a = std::min(first, second);
+                int b = std::max(first, second);
+                temp_cache_key = std::to_string(a) + op + std::to_string(b);
+            } 
+            else 
+            {
+                temp_cache_key = std::to_string(first) + op + std::to_string(second);
+            }
             
-
+            long long temp_result = std::stoll(result.get_value(i, 3));
+            int temp_status = std::stoi(result.get_value(i, 4));
+            
+            cache_result_container.put(temp_cache_key, temp_result);
+            cache_status_container.put(temp_cache_key, temp_status);
+            
+            calc_logger::instance().info("# " + std::to_string(i) + " Cache Key Value: " + temp_cache_key + 
+                " Result: " + std::to_string(temp_result) + " Has put to Cache Conteiner From Data Base With Status: " + std::to_string(temp_status));
         }
+        catch(const std::exception& e)
+        {
+            calc_logger::instance().error(" \t Heating cache is not done succsefully.");
+        }
+    }
     calc_logger::instance().info(" \t Heating cache is done succsefully.");
 }
 
@@ -107,6 +114,7 @@ void Runner::Run(int argc, char* argv[])
         calc_logger::instance().info("Parsed: first=" + std::to_string(first) +  ", second=" + std::to_string(second) +   ", op=" + operation);
 
         if(cache_result_container.has(cache_key))
+
         {
             result = cache_result_container.get(cache_key);
             status = cache_status_container.get(cache_key);
@@ -121,8 +129,11 @@ void Runner::Run(int argc, char* argv[])
                 calc_logger::instance().error("RESULT IS NONE");
                 return;
             }  
-            else
-                calc_logger::instance().info("This Incoming Arguments Already Existing In DB OR CACHE Container. So Calculating Is Skipped. Result from cache: " + std::to_string(result));
+            
+            calc_logger::instance().info("This Incoming Arguments Already Existing In DB OR CACHE Container. So Calculating Is Skipped. Result from cache: " + std::to_string(result));
+            return;
+            
+                
         }
         else
         {
