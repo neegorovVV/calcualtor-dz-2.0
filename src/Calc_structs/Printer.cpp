@@ -1,6 +1,6 @@
 #include "Printer.hpp"
-#include "Logger.hpp"
 
+#include "Logger.hpp"
 
 void Printer::printResult(long long result)
 {
@@ -10,6 +10,6 @@ void Printer::printResult(long long result)
 
 void Printer::printError(const std::string& ermsg)
 {
-     calc_logger::instance().error("Error: " +ermsg);
+    calc_logger::instance().error("Error: " + ermsg);
     calc_logger::instance().error("Error printed");
 }

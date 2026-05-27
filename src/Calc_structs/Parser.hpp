@@ -1,25 +1,21 @@
 #pragma once
 
-#include <string>
 #include <algorithm>
+#include <string>
 
 class Parser
 {
-    private:
-        int first = 0;
-        int second = 0;
-        std::string operation;
-        std::string cache_string;
+   private:
+    int first = 0;
+    int second = 0;
+    std::string operation;
+    std::string cache_string;
 
-    public:
+   public:
+    void parse(const std::string& jsonstring);
 
-        void parse(const std::string& jsonstring);
-
-        int getFirst() const;
-        int getSecond() const;
-        std::string getOperation() const;
-        std::string get_cache_string() const;
-
-
-
+    int getFirst() const;
+    int getSecond() const;
+    std::string getOperation() const;
+    std::string get_cache_string() const;
 };
