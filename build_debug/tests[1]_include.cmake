@@ -1,5 +1,0 @@
-if(EXISTS "/home/test182/calculator/build_debug/tests[1]_tests.cmake")
-  include("/home/test182/calculator/build_debug/tests[1]_tests.cmake")
-else()
-  add_test(tests_NOT_BUILT tests_NOT_BUILT)
-endif()
