@@ -13,6 +13,12 @@ class Parser
 
    public:
     void parse(const std::string& jsonstring);
+    Parser() = default;
+    ~Parser() = default;
+    Parser(const Parser& other) = delete;
+    Parser& operator=(const Parser& other) = delete;
+    Parser(Parser&& other) = delete;
+    Parser operator=(Parser&& other) = delete;
 
     int getFirst() const;
     int getSecond() const;

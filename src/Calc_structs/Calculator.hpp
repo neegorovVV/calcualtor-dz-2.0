@@ -20,4 +20,11 @@ class Calculator
     long long exponentiation(int base, int exp);
 
     long long factorial(int a);
+
+    Calculator() = default;
+    ~Calculator() = default;
+    Calculator(const Calculator& other) = delete;
+    Calculator& operator=(const Calculator& other) = delete;
+    Calculator(Calculator&& other) = delete;
+    Calculator& operator=(Calculator&& other) = delete;
 };

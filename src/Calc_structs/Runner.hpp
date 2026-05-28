@@ -12,7 +12,12 @@ class Runner
     PostgresConnection data_base;
 
    public:
-    Runner();
+    Runner() = default;
+    ~Runner() = default;
+    Runner(const Runner& other) = delete;
+    Runner& operator=(const Runner& other) = delete;
+    Runner(Runner&& other) = delete;
+    Runner& operator=(Runner&& other) = delete;
     void Run(int argc, char* argv[]);
     void heat_cache();
     void insert_to_db(int first_value, int second_value, std::string operation_value,

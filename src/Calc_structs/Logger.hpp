@@ -20,4 +20,6 @@ class calc_logger
 
     calc_logger(const calc_logger&) = delete;
     calc_logger& operator=(const calc_logger&) = delete;
+    calc_logger(calc_logger&& other) = delete;
+    calc_logger& operator=(calc_logger&& other) = delete;
 };
