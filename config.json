@@ -1,0 +1,8 @@
+{
+    "server_port": 8080,
+    "db_host": "localhost",
+    "db_port": 5432,
+    "db_name": "calculator_db",
+    "db_user": "calc_user",
+    "db_pass": "calc_pass"
+}

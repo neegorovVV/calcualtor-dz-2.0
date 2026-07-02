@@ -1,0 +1,11 @@
+[Unit]
+Description=Calculator service
+After=network.target
+
+[Service]
+ExecStart=/home/test182/calculator/build/calc_oop
+Restart=always
+User=test182
+
+[Install]
+WantedBy=multi-user.target
