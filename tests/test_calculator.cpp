@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../src/Calculator.hpp"
+#include "../src/Calc_structs/Calculator.hpp"
 
 TEST(CalculatorTest, AddPositive) 
 {
@@ -149,4 +149,78 @@ TEST(CalculatorTest, NegativeBaseFactorial)
 TEST(CalculatorTest, FactorialOverflow) {
     Calculator calc;
     EXPECT_THROW(calc.factorial(30), std::runtime_error);
+}
+
+
+#include <gtest/gtest.h>
+#include <thread>
+#include <chrono>
+#include "test_client.hpp"
+#include "Runner.hpp"
+
+class IntegrationTest : public ::testing::Test {
+protected:
+    void SetUp() override {
+        server_thread = std::thread([this]() {
+            runner.Run();
+        });
+        
+        // Ждем готовности сервера
+        auto start = std::chrono::steady_clock::now();
+        while (true) {
+            auto now = std::chrono::steady_clock::now();
+            auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - start);
+            if (elapsed.count() > 3000) {
+                FAIL() << "Server did not start";
+            }
+            
+            try {
+                Test_client probe;
+                probe.send(R"({"first":1,"second":1,"op":"+"})");
+                break;
+            } catch (...) {
+                // Продолжаем ждать
+            }
+        }
+    }
+
+    void TearDown() override {
+        runner.stop();
+        if (server_thread.joinable()) {
+            server_thread.join();
+        }
+    }
+
+    Runner runner;
+    std::thread server_thread;
+};
+
+TEST_F(IntegrationTest, AddRequest) {
+    Test_client client;
+    std::string response = client.send(R"({"first":10,"second":5,"op":"+"})");
+    EXPECT_EQ(response, "15");
+}
+
+TEST_F(IntegrationTest, SubtractRequest) {
+    Test_client client;
+    std::string response = client.send(R"({"first":10,"second":5,"op":"-"})");
+    EXPECT_EQ(response, "5");
+}
+
+TEST_F(IntegrationTest, MultiplyRequest) {
+    Test_client client;
+    std::string response = client.send(R"({"first":10,"second":5,"op":"*"})");
+    EXPECT_EQ(response, "50");
+}
+
+TEST_F(IntegrationTest, DivisionRequest) {
+    Test_client client;
+    std::string response = client.send(R"({"first":10,"second":5,"op":"/"})");
+    EXPECT_EQ(response, "2");
+}
+
+TEST_F(IntegrationTest, DivisionByZero) {
+    Test_client client;
+    std::string response = client.send(R"({"first":10,"second":0,"op":"/"})");
+    EXPECT_EQ(response, "ERROR: Calculation error from cache");
 }
